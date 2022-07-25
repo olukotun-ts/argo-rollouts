@@ -6,10 +6,9 @@ spec:
   gateways:
   - istio-rollout-gateway
   hosts:
-  - istio-rollout.apps.argoproj.io
-  - istio-rollout.local
+  - "*"
   http:
-  - name: primary
+  - name: color
     route:
     - destination:
         host: istio-rollout-stable
@@ -17,3 +16,17 @@ spec:
     - destination:
         host: istio-rollout-canary
       weight: 0
+    match:
+    - uri:
+        exact: /color
+  - name: index
+    route:
+    - destination:
+        host: istio-rollout-stable
+      weight: 100
+    - destination:
+        host: istio-rollout-canary
+      weight: 0
+    match:
+    - uri:
+        prefix: /

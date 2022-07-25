@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: canary-demo-preview
 spec:
-  ports:
-  - port: 80
-    targetPort: http
-    protocol: TCP
-    name: http
   selector:
     app: canary-demo
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    protocol: TCP

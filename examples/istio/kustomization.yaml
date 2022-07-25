@@ -1,6 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: canary-demo
+
 resources:
 - namespace.yaml
 - analysis.yaml
@@ -8,5 +10,3 @@ resources:
 - services.yaml
 - virtualservice.yaml
 - rollout.yaml
-
-namespace: rollouts-demo-istio

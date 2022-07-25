@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: rollouts
+deploy:
+  kubectl:
+    manifests:
+      - canary-analysis/*.yaml
+    defaultNamespace: canary-demo
+portForward:
+  - resourceType: Service
+    resourceName: kube-prometheus-stack-prometheus
+    namespace: monitoring
+    port: 9090
+    localPort: 9090
+    

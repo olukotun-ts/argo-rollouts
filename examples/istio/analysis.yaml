@@ -9,9 +9,8 @@ spec:
   - name: namespace
   metrics:
   - name: success-rate
-    initialDelay: 60s
     interval: 20s
-    successCondition: result[0] > 0.90
+    successCondition: len(result) > 0 && result[0] > 0.90
     provider:
       prometheus:
         address: http://prometheus.istio-system:9090
@@ -19,10 +18,10 @@ spec:
           sum(irate(istio_requests_total{
             reporter="source",
             destination_service=~"{{args.service}}.{{args.namespace}}.svc.cluster.local",
-            response_code!~"5.*"}[40s])
+            response_code!~"5.*"}[30s])
           )
           /
           sum(irate(istio_requests_total{
             reporter="source",
-            destination_service=~"{{args.service}}.{{args.namespace}}.svc.cluster.local"}[40s])
+            destination_service=~"{{args.service}}.{{args.namespace}}.svc.cluster.local"}[30s])
           )

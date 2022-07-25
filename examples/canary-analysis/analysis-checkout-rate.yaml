@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: checkout-rate
+spec:
+  args:
+  - name: count
+    value: "1"
+  - name: failureLimit
+    value: "1"
+  - name: preview-service
+  - name: interval
+  - name: checkout-path
+  metrics:
+  - name: checkout-rate
+    count: "{{ args.count }}"
+    interval: "{{ args.interval }}"
+    failureLimit: "{{ args.failureLimit }}"
+    successCondition: result[0] > 0.3 # Requests per second
+    provider:
+      prometheus:
+        address: http://kube-prometheus-stack-prometheus.monitoring:9090
+        query: >+
+          rate(nginx_ingress_controller_requests{exported_service="{{ args.preview-service }}", path="{{ args.checkout-path }}"}[1m])

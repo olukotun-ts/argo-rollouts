@@ -8,30 +8,13 @@ spec:
   selector:
     matchLabels:
       app: canary-demo
-  strategy:
-    canary:
-      analysis:
-        templateName: success-rate
-        args:
-        - name: ingress
-          value: canary-demo
-      canaryService: canary-demo-preview
-      steps:
-      - setWeight: 40
-      - pause: {}
-      - setWeight: 60
-      - pause:
-          duration: 10
-      - setWeight: 80
-      - pause:
-          duration: 10
   template:
     metadata:
       labels:
         app: canary-demo
     spec:
       containers:
-      - image: argoproj/rollouts-demo:blue
+      - image: argoproj/rollouts-demo:green
         imagePullPolicy: Always
         name: canary-demo
         ports:
@@ -42,3 +25,15 @@ spec:
           requests:
             cpu: 5m
             memory: 32Mi
+  strategy:
+    canary:
+      canaryService: canary-demo-preview
+      steps:
+      - setWeight: 40
+      - pause: {}
+      - setWeight: 60
+      - pause:
+          duration: 20
+      - setWeight: 80
+      - pause:
+          duration: 20
