@@ -11,6 +11,7 @@ spec:
   - name: success-rate
     interval: 20s
     successCondition: len(result) > 0 && result[0] > 0.90
+    failureLimit: 5
     provider:
       prometheus:
         address: http://prometheus.istio-system:9090
